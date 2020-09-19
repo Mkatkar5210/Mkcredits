@@ -32,7 +32,7 @@ public class sqlhelper extends SQLiteOpenHelper {
     private static final String CREDITS_TABLE = "credits_table";
 
     public sqlhelper(@Nullable Context context) {
-        super(context,"credits",null, 1);
+        super(context,CREDITS_TABLE,null, 1);
 
     }
 
@@ -46,23 +46,7 @@ public class sqlhelper extends SQLiteOpenHelper {
         db.execSQL(create);
     }
 
-public boolean adddata()
-{
-boolean i;
-i=insert( "bill gates", "billgates@gmail.com",11560);
- i=insert( "Warren Buffett", "warrent@gmail.com",8240);
- i=insert("Bernard Arnault", "bernard@gmail.com",11520);
- i=insert( "mukesh ambani", "mukesh@gmail.com",8110);
- i=insert( "mark zuckerberg","mark@gmail.com",7420);
- i=insert( "Larry Ellison", "larry@gmail.com",7420);
- i=insert( "Larry Page","llary@gmail.com",7360);
- i=insert( "Carlos Slim", "carlos@gmail.com",5090);
- i=insert( "MacKenzie Scott", "mac@gmail.com",6240);
- i=insert("jeff bezos","jeff@gmail.com",10840);
 
-return i;
-
-    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -72,14 +56,14 @@ onCreate(db);
 
 
 
-public boolean insert(String name,String email,double credit)
+public boolean Adduser(String name,String email,double credit)
 {
     SQLiteDatabase db=this.getWritableDatabase();
     ContentValues cv=new ContentValues();
-    cv.put("NAME",name);
-    cv.put("EMAIL",email);
-    cv.put("TOTALCREDITS",credit);
-    long result=db.insert("credits_table",null,cv);
+    cv.put(NAME,name);
+    cv.put(EMAIL,email);
+    cv.put(TOTALCREDITS,credit);
+    long result=db.insert(CREDITS_TABLE,null,cv);
     if(result==-1)
     {
         return false;
@@ -88,26 +72,28 @@ public boolean insert(String name,String email,double credit)
     {
         return true;
     }
+
 }
 public List<CustomerModel> getall()
 {
  List<CustomerModel> returnl=new ArrayList<>();
- String query1="SELECT * FROM "+CREDITS_TABLE;
+ String query1=" SELECT * FROM "+CREDITS_TABLE;
  SQLiteDatabase db=this.getReadableDatabase();
- Cursor cursor =db.rawQuery(query1,null);
+ Cursor cursor =db.rawQuery(query1,null,null);
 if(cursor.moveToFirst())
 {
     do{
-        int id=cursor.getInt(1);
-        String name=cursor.getString(2);
-        String email=cursor.getString(3);
-        double credits=cursor.getDouble(4);
+        int id=cursor.getInt(0);
+        String name=cursor.getString(1);
+        String email=cursor.getString(2);
+        double credits=cursor.getDouble(3);
 CustomerModel cu=new CustomerModel(id,name,email,credits);
 returnl.add(cu);
 
     }while(cursor.moveToNext());
 }
 cursor.close();
+
 db.close();
  return returnl;
 }

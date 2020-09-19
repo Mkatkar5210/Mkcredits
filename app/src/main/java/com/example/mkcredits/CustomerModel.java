@@ -9,8 +9,8 @@ public class CustomerModel {
 
     public CustomerModel(int id, String name, String email, double currentcredit) {
         this.id = id;
-        Name = name;
-        Email = email;
+        this.Name = name;
+        this.Email = email;
         this.currentcredit = currentcredit;
     }
 
